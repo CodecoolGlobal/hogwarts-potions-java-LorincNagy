@@ -56,10 +56,21 @@ public class RoomController {
 
     @PutMapping("/{id}")
     public void updateRoomById(@PathVariable("id") Long id, @RequestBody RoomDTO roomDTO) {
-        Room room = new Room();
-        room.setCapacity(roomDTO.capacity());
-        room.setResidents(roomDTO.residents());
-        roomService.updateRoomById(id, room);
+        Optional<Room> optionalRoom = roomService.getRoomById(id);
+
+        if (optionalRoom.isPresent()) {
+            Room room = optionalRoom.get();
+            room.setCapacity(roomDTO.capacity());
+
+            for (Student studentDTO : roomDTO.residents()) {
+                studentDTO.setRoom(room);
+            }
+
+            room.getResidents().clear();
+            room.getResidents().addAll(roomDTO.residents());
+
+            roomService.updateRoomById(id, room);
+        }
     }
 
     @DeleteMapping("/{id}")

@@ -17,7 +17,11 @@ public class Student {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+
+    @Enumerated(EnumType.STRING)
     private HouseType houseType;
+
+    @Enumerated(EnumType.STRING)
     private PetType petType;
 
     @ManyToOne
