@@ -22,7 +22,7 @@ public class Recipe {
     private Long id;
     private String name;
     @ManyToOne(cascade = CascadeType.ALL)
-    private Student brewer;
+    private Student student;
     @ManyToMany(mappedBy = "recipes",cascade = CascadeType.ALL)
     private List<Ingredient> ingredients;
 }

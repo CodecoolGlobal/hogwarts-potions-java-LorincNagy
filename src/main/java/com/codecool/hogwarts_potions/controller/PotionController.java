@@ -26,29 +26,20 @@ public class PotionController {
     }
 
 
-//    @GetMapping
-//    public List<Potion> getAllPotions() {
-//        return potionService.getAllPotions();
-//    }
+    @GetMapping
+    public List<Potion> getAllPotions() {
+        return potionService.getAllPotions();
+    }
 
-//    @PostMapping
-//    public void addPotion(@RequestBody PotionDTO potionDTO) {
-//        // Hozz létre egy Potion entitást a PotionDTO alapján
-//        Potion potion = new Potion();
-//        potion.setName(potionDTO.name());
-//        potion.setStudent(potionDTO.student());
-//        potion.setIngredients(potionDTO.ingredients());
-////            for (Ingredient ingredient : potionDTO.ingredients()) {
-////
-////                potion.getIngredients().add(ingredient);
-////            }
-//
-//        potion.setBrewingStatus(potionDTO.brewingStatus());
-//        potion.setRecipe(potionDTO.recipe());
-//
-//        // Mentés az adatbázisba
-//        potionService.addPotion(potion);
-//    }
+    @PostMapping("/{studentId}")
+    public void addPotion(@RequestBody PotionDTO potion, @PathVariable Long studentId) {
+        potionService.addPotion(potion, studentId);
+    }
+
+    @GetMapping("/{studentId}")
+    public List<Potion> getPotionsById(@PathVariable Long studentId) {
+        return potionService.getPotionsByStudentId(studentId);
+    }
 }
 
 

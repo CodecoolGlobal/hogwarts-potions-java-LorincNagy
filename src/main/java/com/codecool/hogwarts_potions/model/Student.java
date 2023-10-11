@@ -26,8 +26,12 @@ public class Student {
     @JsonBackReference // A gyermek entitásban használd ezt az annotációt
     private Room room;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "student")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "student")//
     private List<Potion> potions;
+
+    public void addPotion(Potion potion) {
+        potions.add(potion);
+    }
 }
 //Student osztály helyesen van definiálva az entitásként való kezeléshez a Spring Data JPA számára. Az osztály tartalmazza az @Entity annotációt, amely jelzi, hogy ez egy entitás, valamint az @Id és @GeneratedValue annotációkat az egyedi azonosítóhoz.
 //

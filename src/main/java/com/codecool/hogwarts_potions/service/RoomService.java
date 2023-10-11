@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 public class RoomService {
 
 
-    private RoomRepository roomRepository;
+    private final RoomRepository roomRepository;
 
     @Autowired//injektál
     public RoomService(RoomRepository roomRepository) {
