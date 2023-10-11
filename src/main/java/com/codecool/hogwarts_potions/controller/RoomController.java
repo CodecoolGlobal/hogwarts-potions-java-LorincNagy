@@ -30,47 +30,17 @@ public class RoomController {
 
     @PostMapping
     public void addRoom(@RequestBody RoomDTO roomDTO) {
-
-        Room room = new Room();
-        room.setCapacity(roomDTO.capacity());
-
-        Set<Student> students = new HashSet<>();
-
-
-        for (Student student : roomDTO.residents()) {
-
-            student.setRoom(room);
-
-            students.add(student);
-        }
-
-        room.getResidents().addAll(students);
-
-        roomService.addRoom(room);
+        roomService.addRoomFromDTO(roomDTO);
     }
 
     @GetMapping("/{id}")
-    public Optional<Room> getRoomById(@PathVariable("id") Long id) {
+    public Room getRoomById(@PathVariable("id") Long id){
         return roomService.getRoomById(id);
     }
 
     @PutMapping("/{id}")
     public void updateRoomById(@PathVariable("id") Long id, @RequestBody RoomDTO roomDTO) {
-        Optional<Room> optionalRoom = roomService.getRoomById(id);
-
-        if (optionalRoom.isPresent()) {
-            Room room = optionalRoom.get();
-            room.setCapacity(roomDTO.capacity());
-
-            for (Student studentDTO : roomDTO.residents()) {
-                studentDTO.setRoom(room);
-            }
-
-            room.getResidents().clear();
-            room.getResidents().addAll(roomDTO.residents());
-
-            roomService.updateRoomById(id, room);
-        }
+        roomService.updateRoomWithDTO(id, roomDTO);
     }
 
     @DeleteMapping("/{id}")

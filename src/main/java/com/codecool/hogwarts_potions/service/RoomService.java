@@ -1,14 +1,18 @@
 package com.codecool.hogwarts_potions.service;
 
 import com.codecool.hogwarts_potions.dao.RoomRepository;
+import com.codecool.hogwarts_potions.dto.RoomDTO;
 import com.codecool.hogwarts_potions.model.PetType;
 import com.codecool.hogwarts_potions.model.Room;
+import com.codecool.hogwarts_potions.model.Student;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,31 +30,34 @@ public class RoomService {
         return this.roomRepository.findAll();
     }
 
-    public void addRoom(Room room) {
+    public void addRoomFromDTO(RoomDTO roomDTO) {
+        Room room = new Room();
+        room.setCapacity(roomDTO.capacity());
+
+        Set<Student> students = new HashSet<>(roomDTO.residents());
+        for (Student student : students) {
+            student.setRoom(room); // Beállítjuk a Studentek Room attribútumát
+        }
+
+        room.setResidents(students);
+
         roomRepository.save(room);
     }
 
-    public Optional<Room> getRoomById(Long id) {
-        return roomRepository.findById(id);
+    public Room getRoomById(Long id) {
+        return roomRepository.findById(id).get();
     }
 
-    public void updateRoomById(Long id, Room updatedRoom) {
-        Optional<Room> optionalRoom = roomRepository.findById(id);
-
-        if (optionalRoom.isPresent()) {
-            Room currentRoom = optionalRoom.get();
-
-            // Frissítsd a kapacitást
-            currentRoom.setCapacity(updatedRoom.getCapacity());
-
-
-            // Adj hozzá új diákokat
-            currentRoom.getResidents().addAll(updatedRoom.getResidents());
-
-            roomRepository.save(currentRoom);
-        } else {
-            throw new NotFoundException("A megadott szoba nem található.");
+    public void updateRoomWithDTO(Long id, RoomDTO roomDTO) {
+        Room currentRoom = roomRepository.findById(id).get();
+        Set<Student> students = new HashSet<>(roomDTO.residents());
+        for (Student student : students) {
+            student.setRoom(currentRoom); // Beállítjuk a Studentek Room attribútumát
         }
+
+        currentRoom.setResidents(students);
+        currentRoom.setCapacity(roomDTO.capacity());
+        roomRepository.save(currentRoom);
     }
 
     public void deleteRoomById(Long id) {

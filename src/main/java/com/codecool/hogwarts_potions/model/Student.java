@@ -1,10 +1,11 @@
 package com.codecool.hogwarts_potions.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.*;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -17,18 +18,16 @@ public class Student {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-
-    @Enumerated(EnumType.STRING)
     private HouseType houseType;
-
-    @Enumerated(EnumType.STRING)
     private PetType petType;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "room_id")
-    @JsonBackReference
-    private Room room;//Student entitásban lévő mező, ami hivatkozik a teremre, az "room" nevű mező. Ez azért fontos, mert ez alapján azonosítja a Hibernate, hogy hogyan kell összekapcsolni a két entitást az adatbázisban.
+    @JsonBackReference // A gyermek entitásban használd ezt az annotációt
+    private Room room;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "student")
+    private List<Potion> potions;
 }
 //Student osztály helyesen van definiálva az entitásként való kezeléshez a Spring Data JPA számára. Az osztály tartalmazza az @Entity annotációt, amely jelzi, hogy ez egy entitás, valamint az @Id és @GeneratedValue annotációkat az egyedi azonosítóhoz.
 //

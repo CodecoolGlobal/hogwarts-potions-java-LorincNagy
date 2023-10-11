@@ -1,7 +1,9 @@
 package com.codecool.hogwarts_potions.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.*;
 
 import javax.persistence.*;
@@ -21,7 +23,7 @@ public class Room {
     private Integer capacity;
 
     @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)
-    @JsonManagedReference
+    @JsonManagedReference // A szülő entitásban használd ezt az annotációt
     private Set<Student> residents = new HashSet<>();
 }
 //cascade = CascadeType.ALL: Ez a rész azt jelenti, hogy a változtatások a Room entitáson (például a terem törlése vagy módosítása) automatikusan kiterjednek a hozzárendelt Student entitásokra is. Azaz, ha törölsz egy termet, akkor az összes hozzárendelt diák is törölve lesz. Ezzel könnyebb kezelni az adatok konzisztenciáját az adatbázisban.
