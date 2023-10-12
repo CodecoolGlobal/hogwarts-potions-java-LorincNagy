@@ -18,11 +18,14 @@ public class Student {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+
+    @Enumerated(EnumType.STRING) // Enum értékeknek a string reprezentációja mentésre kerül
     private HouseType houseType;
+
+    @Enumerated(EnumType.STRING) // Enum értékeknek a string reprezentációja mentésre kerül
     private PetType petType;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "room_id")
+    @ManyToOne(cascade = CascadeType.ALL)//több diák is tartozhat ugyanahoz a szobához de egy diák csak egy szobához
     @JsonBackReference // A gyermek entitásban használd ezt az annotációt
     private Room room;
 

@@ -15,19 +15,24 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,property = "id")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Potion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    @ManyToOne(cascade = CascadeType.ALL)//több potionnek is lehet ugyanaz a studentje azaz potionnek lesz egy student_id mezője ahol studentek lesznek
+    @ManyToOne(cascade = CascadeType.ALL)
+//több potionnek is lehet ugyanaz a studentje azaz potionnek lesz egy student_id mezője ahol studentek lesznek
     private Student student;//@ManyToOne(cascade = CascadeType.ALL)//több potionnek is lehet ugyanaz a studentje azaz potionnek lesz egy student_id mezője ahol studentek lesznek,@ManyToOne annotáció azt jelzi, hogy több bájital is ugyanahhoz a diákhoz tartozhat, de egyetlen bájitalhoz csak egy diák tartozik. Tehát a JSON kérésben csak egy diákot kell megadni a bájitalhoz, akit a bájital készítőjeként szeretnél rögzíteni.
     @ManyToMany(cascade = CascadeType.ALL)
     private Set<Ingredient> ingredients;
     private BrewingStatus brewingStatus;
     @OneToOne(cascade = CascadeType.ALL)
     private Recipe recipe;
+
+    public void addIngredient(Ingredient ingredient) {
+        ingredients.add(ingredient);
+    }
 }
 
 //@ManyToOne: Egy bájitalhoz egyetlen diák tartozik, és az adatbázisban általában egy student_id mező jelenik meg a bájital táblájában, ami egy idegen kulcs a diák táblához. Ezzel a kapcsolattal egy bájitalhoz egy diák tartozik, de több bájital is hivatkozhat ugyanarra a diákra.

@@ -55,7 +55,7 @@ public class RoomService {
             student.setRoom(currentRoom); // Beállítjuk a Studentek Room attribútumát
         }
 
-        currentRoom.setResidents(students);
+        currentRoom.setResidents(students);//currentRoom.setResidents(students) sorban az összes diákot beállítja a students halmaz tartalmára. Ha a students halmazban szerepel olyan diák, akinek az azonosítója megegyezik a meglévő szobában lévő diák azonosítójával, akkor az meglévő diák adatait frissíti. Ha nincs ilyen azonosítójú diák a students halmazban, akkor új diák kerül hozzáadásra a szobához.
         currentRoom.setCapacity(roomDTO.capacity());
         roomRepository.save(currentRoom);
     }

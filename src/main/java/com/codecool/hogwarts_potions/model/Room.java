@@ -22,7 +22,7 @@ public class Room {
     private Long id;
     private Integer capacity;
 
-    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)//egy szobához tartozhat több diák is
     @JsonManagedReference // A szülő entitásban használd ezt az annotációt
     private Set<Student> residents = new HashSet<>();
 }
